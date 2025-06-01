@@ -2,6 +2,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 
 import 'firebase_options.dart';
 
@@ -18,44 +20,82 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Chat App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const ChatPage(title: 'Chat'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _ChatPageState extends State<ChatPage> {
+  late final InMemoryChatController _controller;
+  late final User _user;
 
-  Future<void> _callHelloWorldFunction() async {
-    try {
-      final functions = FirebaseFunctions.instanceFor(
-        region: 'asia-northeast1',
-      );
-      final HttpsCallable callable = functions.httpsCallable('helloGenkit');
-      final result = await callable("Hello, World!");
-      print(result.data);
-    } catch (e) {
-      print('Error calling function: $e');
-    }
+  @override
+  void initState() {
+    super.initState();
+    
+    _user = const User(
+      id: 'user-1',
+      firstName: 'User',
+    );
+    
+    _controller = InMemoryChatController();
+    
+    _addWelcomeMessage();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  void _addWelcomeMessage() {
+    final welcomeMessage = TextMessage(
+      author: const User(
+        id: 'bot-1',
+        firstName: 'Assistant',
+      ),
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: 'welcome-message',
+      text: 'こんにちは！チャットを開始しましょう。',
+    );
+    
+    _controller.addMessage(welcomeMessage);
+  }
+
+  void _handleSendPressed(PartialTextMessage message) {
+    final textMessage = TextMessage(
+      author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      text: message.text,
+    );
+
+    _controller.addMessage(textMessage);
+    
+    _simulateResponse(message.text);
+  }
+
+  void _simulateResponse(String userMessage) {
+    Future.delayed(const Duration(seconds: 1), () {
+      final responseMessage = TextMessage(
+        author: const User(
+          id: 'bot-1',
+          firstName: 'Assistant',
+        ),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        text: 'あなたのメッセージ: "$userMessage" を受信しました。',
+      );
+      
+      _controller.addMessage(responseMessage);
     });
-    _callHelloWorldFunction();
   }
 
   @override
@@ -65,23 +105,18 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: Chat(
+        messages: _controller.messages,
+        onSendPressed: _handleSendPressed,
+        user: _user,
+        theme: const DefaultChatTheme(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
