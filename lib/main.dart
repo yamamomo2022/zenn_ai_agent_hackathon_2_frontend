@@ -44,14 +44,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    
+
     _user = const User(
       id: 'user-1',
       firstName: 'User',
     );
-    
+
     _controller = InMemoryChatController();
-    
+
     _addWelcomeMessage();
   }
 
@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
       id: 'welcome-message',
       text: 'こんにちは！チャットを開始しましょう。',
     );
-    
+
     _controller.addMessage(welcomeMessage);
   }
 
@@ -78,7 +78,7 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     _controller.addMessage(textMessage);
-    
+
     _simulateResponse(message.text);
   }
 
@@ -93,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         text: 'あなたのメッセージ: "$userMessage" を受信しました。',
       );
-      
+
       _controller.addMessage(responseMessage);
     });
   }
