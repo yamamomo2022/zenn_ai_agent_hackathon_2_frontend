@@ -33,15 +33,26 @@ class _ChatPageState extends State<ChatPage> {
         onMessageSend: (text) {
           _chatController.insertMessage(
             TextMessage(
-              // Better to use UUID or similar for the ID - IDs must be unique
               id: '${Random().nextInt(1000) + 1}',
               authorId: 'user1',
               createdAt: DateTime.now().toUtc(),
               text: text,
             ),
           );
+          
+          _chatController.insertMessage(
+            TextMessage(
+              id: '${Random().nextInt(1000) + 1000}',
+              authorId: 'echo_bot',
+              createdAt: DateTime.now().toUtc(),
+              text: text,
+            ),
+          );
         },
         resolveUser: (UserID id) async {
+          if (id == 'echo_bot') {
+            return User(id: id, name: 'Echo Bot');
+          }
           return User(id: id, name: 'John Doe');
         },
       ),
