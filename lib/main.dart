@@ -10,7 +10,8 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await FirebaseAuth.instance.signInAnonymously();
   runApp(const MyApp());
 }
@@ -23,7 +24,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chat App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
       ),
       home: const ChatPage(title: 'Chat'),
     );
@@ -103,7 +106,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: 
+            Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Chat(
