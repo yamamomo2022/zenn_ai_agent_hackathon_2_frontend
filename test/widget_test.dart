@@ -11,14 +11,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zenn_ai_agent_hackathon_2_frontend/main.dart';
 
 void main() {
-  testWidgets('Chat UI loads with welcome message',
-      (WidgetTester tester) async {
+  testWidgets('Chat UI loads with welcome message', (
+    WidgetTester tester,
+  ) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
     // Verify that the chat UI loads with the welcome message.
-    expect(find.text('こんにちは！チャットを開始しましょう。'),
-        findsOneWidget);
+    expect(find.text('こんにちは！チャットを開始しましょう。'), findsOneWidget);
 
     // Verify that the app bar shows the correct title.
     expect(find.text('Chat'), findsOneWidget);
