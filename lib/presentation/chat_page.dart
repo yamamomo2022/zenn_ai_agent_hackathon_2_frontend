@@ -39,7 +39,7 @@ class _ChatPageState extends State<ChatPage> {
               text: text,
             ),
           );
-          
+
           _chatController.insertMessage(
             TextMessage(
               id: '${Random().nextInt(1000) + 1000}',
