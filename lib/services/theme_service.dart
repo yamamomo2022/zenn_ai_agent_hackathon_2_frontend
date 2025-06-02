@@ -16,7 +16,7 @@ class ThemeService extends ChangeNotifier {
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final themeModeString = prefs.getString(_themeKey) ?? 'system';
-    
+
     switch (themeModeString) {
       case 'light':
         _themeMode = ThemeMode.light;
@@ -33,7 +33,7 @@ class ThemeService extends ChangeNotifier {
   Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
     notifyListeners();
-    
+
     final prefs = await SharedPreferences.getInstance();
     String themeModeString;
     switch (themeMode) {
