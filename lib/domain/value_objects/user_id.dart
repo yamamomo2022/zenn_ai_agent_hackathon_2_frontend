@@ -9,7 +9,9 @@ class UserId {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserId && runtimeType == other.runtimeType && value == other.value;
+      other is UserId &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
 
   @override
   int get hashCode => value.hashCode;

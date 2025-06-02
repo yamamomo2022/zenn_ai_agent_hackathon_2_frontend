@@ -11,10 +11,12 @@ class InMemoryChatRepository implements ChatRepository {
 
   InMemoryChatRepository()
       : _controller = InMemoryChatController(),
-        _messagesController = StreamController<List<ChatMessage>>.broadcast() {
+        _messagesController =
+            StreamController<List<ChatMessage>>.broadcast() {
     _controller.operationsStream.listen((_) {
       final messages = _controller.messages
-          .map((message) => ChatMessage.fromFlutterChatCore(message as TextMessage))
+          .map((message) =>
+              ChatMessage.fromFlutterChatCore(message as TextMessage))
           .toList();
       _messagesController.add(messages);
     });

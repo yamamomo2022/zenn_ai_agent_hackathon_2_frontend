@@ -13,16 +13,17 @@ import '../services/theme_service.dart';
 final GetIt serviceLocator = GetIt.instance;
 
 void setupServiceLocator() {
-  serviceLocator.registerSingleton<MessageIdGenerator>(RandomMessageIdGenerator());
-  
+  serviceLocator
+      .registerSingleton<MessageIdGenerator>(RandomMessageIdGenerator());
+
   serviceLocator.registerSingleton<EchoBotService>(
     SimpleEchoBotService(serviceLocator<MessageIdGenerator>()),
   );
-  
+
   serviceLocator.registerSingleton<ChatRepository>(InMemoryChatRepository());
-  
+
   serviceLocator.registerSingleton<ThemeService>(ThemeService());
-  
+
   serviceLocator.registerFactory<SendMessageUseCase>(
     () => SendMessageUseCase(
       serviceLocator<ChatRepository>(),
@@ -30,11 +31,11 @@ void setupServiceLocator() {
       serviceLocator<MessageIdGenerator>(),
     ),
   );
-  
+
   serviceLocator.registerFactory<ResetChatUseCase>(
     () => ResetChatUseCase(serviceLocator<ChatRepository>()),
   );
-  
+
   serviceLocator.registerFactory<GetMessagesUseCase>(
     () => GetMessagesUseCase(serviceLocator<ChatRepository>()),
   );
