@@ -26,6 +26,15 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              _chatController.setMessages([]);
+            },
+            tooltip: 'Reset conversation',
+          ),
+        ],
       ),
       body: Chat(
         chatController: _chatController,
