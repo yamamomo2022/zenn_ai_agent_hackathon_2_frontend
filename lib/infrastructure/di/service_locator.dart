@@ -13,8 +13,9 @@ import '../services/theme_service.dart';
 final GetIt serviceLocator = GetIt.instance;
 
 void setupServiceLocator() {
-  serviceLocator
-      .registerSingleton<MessageIdGenerator>(RandomMessageIdGenerator());
+  serviceLocator.registerSingleton<MessageIdGenerator>(
+    RandomMessageIdGenerator(),
+  );
 
   serviceLocator.registerSingleton<EchoBotService>(
     SimpleEchoBotService(serviceLocator<MessageIdGenerator>()),
