@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import "presentation/chat_page.dart";
-import 'services/theme_service.dart';
+import 'infrastructure/services/theme_service.dart';
+import 'infrastructure/di/service_locator.dart';
 
 import 'firebase_options.dart';
 
@@ -10,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAuth.instance.signInAnonymously();
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -26,14 +28,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _themeService = ThemeService();
+    _themeService = serviceLocator<ThemeService>();
     _themeService.addListener(_onThemeChanged);
   }
 
   @override
   void dispose() {
     _themeService.removeListener(_onThemeChanged);
-    _themeService.dispose();
     super.dispose();
   }
 
