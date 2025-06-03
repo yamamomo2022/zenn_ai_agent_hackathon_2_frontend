@@ -5,7 +5,7 @@ import '../value_objects/user_id.dart';
 class ChatMessage {
   final MessageId id;
   final UserId authorId;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final String text;
 
   const ChatMessage({
