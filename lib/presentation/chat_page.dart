@@ -10,11 +10,7 @@ import '../infrastructure/services/theme_service.dart';
 import '../infrastructure/di/service_locator.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({
-    super.key,
-    required this.title,
-    required this.themeService,
-  });
+  const ChatPage({super.key, required this.title, required this.themeService});
   final String title;
   final ThemeService themeService;
 
@@ -36,10 +32,11 @@ class _ChatPageState extends State<ChatPage> {
     _resetChatUseCase = serviceLocator<ResetChatUseCase>();
     _getMessagesUseCase = serviceLocator<GetMessagesUseCase>();
     _chatController = InMemoryChatController();
-    
+
     _getMessagesUseCase.execute().listen((messages) {
-      final flutterMessages =
-          messages.map((msg) => msg.toFlutterChatCore()).toList();
+      final flutterMessages = messages
+          .map((msg) => msg.toFlutterChatCore())
+          .toList();
       _chatController.setMessages(flutterMessages);
     });
   }
