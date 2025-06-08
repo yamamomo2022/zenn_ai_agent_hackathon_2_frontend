@@ -9,6 +9,7 @@ import '../repositories/in_memory_chat_repository.dart';
 import '../services/random_message_id_generator.dart';
 import '../services/simple_echo_bot_service.dart';
 import '../services/theme_service.dart';
+import '../services/firebase_functions_service.dart';
 
 final GetIt serviceLocator = GetIt.instance;
 
@@ -25,11 +26,15 @@ void setupServiceLocator() {
 
   serviceLocator.registerSingleton<ThemeService>(ThemeService());
 
+  serviceLocator.registerSingleton<FirebaseFunctionsService>(
+    FirebaseFunctionsService(),
+  );
+
   serviceLocator.registerFactory<SendMessageUseCase>(
     () => SendMessageUseCase(
       serviceLocator<ChatRepository>(),
-      serviceLocator<EchoBotService>(),
       serviceLocator<MessageIdGenerator>(),
+      serviceLocator<FirebaseFunctionsService>(),
     ),
   );
 
