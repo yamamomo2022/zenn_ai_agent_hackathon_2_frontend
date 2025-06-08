@@ -6,9 +6,15 @@ class FirebaseFunctionsService {
   );
 
   Future<String> callHelloGenkit(String text) async {
-    final result = await _functions.httpsCallable('helloGenkit').call({
-      'text': text,
-    });
-    return result.data['text'] as String;
+    try {
+      final result = await _functions.httpsCallable('helloGenkit').call({
+        'text': text,
+      });
+      return result.data['text'] as String;
+    } on FirebaseFunctionsException catch (e) {
+      throw Exception('Cloud Function error: \\${e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error: \\${e.toString()}');
+    }
   }
 }
