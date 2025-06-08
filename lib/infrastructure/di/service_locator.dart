@@ -33,7 +33,6 @@ void setupServiceLocator() {
   serviceLocator.registerFactory<SendMessageUseCase>(
     () => SendMessageUseCase(
       serviceLocator<ChatRepository>(),
-      serviceLocator<EchoBotService>(),
       serviceLocator<MessageIdGenerator>(),
       serviceLocator<FirebaseFunctionsService>(),
     ),

@@ -7,13 +7,11 @@ import '../../infrastructure/services/firebase_functions_service.dart';
 
 class SendMessageUseCase {
   final ChatRepository _chatRepository;
-  final EchoBotService _echoBotService;
   final MessageIdGenerator _messageIdGenerator;
   final FirebaseFunctionsService _firebaseFunctionsService;
 
   SendMessageUseCase(
     this._chatRepository,
-    this._echoBotService,
     this._messageIdGenerator,
     this._firebaseFunctionsService,
   );
@@ -37,8 +35,5 @@ class SendMessageUseCase {
       text: aiResponse,
     );
     await _chatRepository.sendMessage(aiMessage);
-
-    final echoMessage = _echoBotService.createEchoMessage(userMessage);
-    await _chatRepository.sendMessage(echoMessage);
   }
 }
