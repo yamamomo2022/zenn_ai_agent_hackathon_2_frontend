@@ -1,6 +1,5 @@
 import '../../domain/entities/chat_message.dart';
 import '../../domain/repositories/chat_repository.dart';
-import '../../domain/services/echo_bot_service.dart';
 import '../../domain/services/message_id_generator.dart';
 import '../../domain/value_objects/user_id.dart';
 import '../../infrastructure/services/firebase_functions_service.dart';
@@ -9,6 +8,8 @@ class SendMessageUseCase {
   final ChatRepository _chatRepository;
   final MessageIdGenerator _messageIdGenerator;
   final FirebaseFunctionsService _firebaseFunctionsService;
+
+  final UserId _aiUserId = UserId('ai');
 
   SendMessageUseCase(
     this._chatRepository,
@@ -30,7 +31,7 @@ class SendMessageUseCase {
     final aiResponse = await _firebaseFunctionsService.callHelloGenkit(text);
     final aiMessage = ChatMessage(
       id: _messageIdGenerator.generate(),
-      authorId: UserId('ai'), // AIのユーザーIDを適宜設定
+      authorId: _aiUserId,
       createdAt: DateTime.now().toUtc(),
       text: aiResponse,
     );
