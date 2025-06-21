@@ -12,9 +12,9 @@ class FirebaseFunctionsService {
       });
       return result.data['text'] as String;
     } on FirebaseFunctionsException catch (e) {
-      throw Exception('Cloud Function error: \\${e.message}');
+      throw Exception('Cloud Function error: ${e.message}');
     } catch (e) {
-      throw Exception('Unexpected error: \\${e.toString()}');
+      throw Exception('Unexpected error: ${e.toString()}');
     }
   }
 
@@ -30,9 +30,9 @@ class FirebaseFunctionsService {
       final longitude = data['longitude'];
       return '$latitude,$longitude';
     } on FirebaseFunctionsException catch (e) {
-      throw Exception('Cloud Function error: \\${e.message}');
+      throw Exception('Cloud Function error: ${e.message}');
     } catch (e) {
-      throw Exception('Unexpected error: \\${e.toString()}');
+      throw Exception('Unexpected error: ${e.toString()}');
     }
   }
 }
