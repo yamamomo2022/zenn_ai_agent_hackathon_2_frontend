@@ -78,7 +78,7 @@ class _ChatPageState extends State<ChatPage> {
         chatController: _chatController,
         currentUserId: _currentUserId.value,
         onMessageSend: (text) {
-          _sendMessageUseCase.execute(text, _currentUserId);
+          _sendMessageUseCase.executeGeocoding(text, _currentUserId);
         },
         resolveUser: (UserID id) async {
           final chatUser = await serviceLocator
