@@ -37,4 +37,24 @@ class SendMessageUseCase {
     );
     await _chatRepository.sendMessage(aiMessage);
   }
+
+  Future<void> executeGeocoding(String address, UserId currentUserId) async {
+    final userMessage = ChatMessage(
+      id: _messageIdGenerator.generate(),
+      authorId: currentUserId,
+      createdAt: DateTime.now().toUtc(),
+      text: address,
+    );
+    await _chatRepository.sendMessage(userMessage);
+
+    // geocoding Cloud Functionを呼び出す
+    final geoText = await _firebaseFunctionsService.callGeocoding(address);
+    final aiMessage = ChatMessage(
+      id: _messageIdGenerator.generate(),
+      authorId: _aiUserId,
+      createdAt: DateTime.now().toUtc(),
+      text: geoText,
+    );
+    await _chatRepository.sendMessage(aiMessage);
+  }
 }

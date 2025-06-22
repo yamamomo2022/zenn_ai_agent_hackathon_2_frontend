@@ -12,9 +12,27 @@ class FirebaseFunctionsService {
       });
       return result.data['text'] as String;
     } on FirebaseFunctionsException catch (e) {
-      throw Exception('Cloud Function error: \\${e.message}');
+      throw Exception('Cloud Function error: ${e.message}');
     } catch (e) {
-      throw Exception('Unexpected error: \\${e.toString()}');
+      throw Exception('Unexpected error: ${e.toString()}');
+    }
+  }
+
+  Future<String> callGeocoding(String address) async {
+    try {
+      final result = await _functions.httpsCallable('Geocoding').call({
+        'locationName': address,
+      });
+      // Cloud Functions から返ってくる値は { latitude, longitude } の Map なので、
+      // それをテキスト形式（例: "lat,lon"）で返す
+      final data = result.data;
+      final latitude = data['latitude'];
+      final longitude = data['longitude'];
+      return '$latitude,$longitude';
+    } on FirebaseFunctionsException catch (e) {
+      throw Exception('Cloud Function error: ${e.message}');
+    } catch (e) {
+      throw Exception('Unexpected error: ${e.toString()}');
     }
   }
 }
